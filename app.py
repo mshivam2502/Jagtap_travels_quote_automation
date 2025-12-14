@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, send_file
+from flask import redirect, url_for, session, flash
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
@@ -23,6 +24,9 @@ THEME = {
     "notes_text": colors.HexColor("#001667"),
     "footer_text": colors.HexColor("#001667")
 }
+
+LOGIN_USERNAME = "siddhi"
+LOGIN_PASSWORD = "JagtapTravels@7220"
 
 # ---------- PDF GENERATOR ----------
 def generate_pdf(data, filename):
@@ -142,6 +146,8 @@ def generate_pdf(data, filename):
 # ---------- ROUTE ----------
 @app.route("/", methods=["GET", "POST"])
 def index():
+    if not session.get("logged_in"):
+        return redirect(url_for("login"))
     if request.method == "POST":
 
         raw_headers = request.form.getlist("headers[]")
@@ -180,15 +186,37 @@ def index():
             "notes": notes
         }
 
-        filename = f"{OUTPUT_DIR}/quotation_{uuid.uuid4().hex}.pdf"
+        filename = f"{OUTPUT_DIR}/quotation.pdf"
         generate_pdf(data, filename)
 
         return send_file(filename, as_attachment=True)
 
     return render_template("index.html")
 
+#----- LOGIN ROUTE --------------
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        if username == LOGIN_USERNAME and password == LOGIN_PASSWORD:
+            session["logged_in"] = True
+            return redirect(url_for("index"))
+        else:
+            flash("Invalid login")
+
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+
 # ---------- RUN ----------
 if __name__ == "__main__":
     # app.run(host="0.0.0.0", port=5000, debug=True) # for developement
     app.run()
+    app.secret_key = "siddhi"
 
