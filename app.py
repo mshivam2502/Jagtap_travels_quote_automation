@@ -217,6 +217,6 @@ def logout():
 # ---------- RUN ----------
 if __name__ == "__main__":
     # app.run(host="0.0.0.0", port=5000, debug=True) # for developement
+    app.secret_key = "this-is-a-secret-key"
     app.run()
-    app.secret_key = "siddhi"
 
