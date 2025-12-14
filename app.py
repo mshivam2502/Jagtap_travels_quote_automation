@@ -27,6 +27,7 @@ THEME = {
 
 LOGIN_USERNAME = "siddhi"
 LOGIN_PASSWORD = "JagtapTravels@7220"
+app.secret_key = "this-is-a-secret-key"
 
 # ---------- PDF GENERATOR ----------
 def generate_pdf(data, filename):
@@ -217,6 +218,5 @@ def logout():
 # ---------- RUN ----------
 if __name__ == "__main__":
     # app.run(host="0.0.0.0", port=5000, debug=True) # for developement
-    app.secret_key = "this-is-a-secret-key"
     app.run()
 
