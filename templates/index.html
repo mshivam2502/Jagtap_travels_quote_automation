@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quotation Generator</title>
+
+<style>
+body { font-family: Arial; padding: 15px; }
+input, textarea { width: 100%; padding: 8px; margin: 6px 0; }
+button { padding: 10px; margin-top: 10px; width: 100%; }
+.add-btn { background: #ddd; border: none; }
+.submit-btn { background: #8B0000; color: white; border: none; }
+.row-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+</style>
+
+<script>
+function addRow() {
+    const rows = document.getElementById("rows");
+    rows.insertAdjacentHTML("beforeend", `
+        <div class="row-grid">
+            <input name="vehicle[]" placeholder="Vehicle">
+            <input name="rate1[]" placeholder="10 Hours">
+            <input name="rate2[]" placeholder="Extra Hours">
+            <input name="rate3[]" placeholder="Extra KM">
+        </div>
+    `);
+}
+
+function addNote() {
+    const notes = document.getElementById("notes");
+    notes.insertAdjacentHTML("beforeend", `
+        <textarea name="notes[]" placeholder="Note"></textarea>
+    `);
+}
+</script>
+</head>
+
+<body>
+
+<h2>Generate Quotation</h2>
+
+<form method="post">
+
+<input name="to_company" placeholder="Company Name" required>
+<input name="to_location" placeholder="Location" required>
+
+<h4>Table Headers</h4>
+<input name="headers[]" value="TYPE OF VEHICLE"  required>
+<input name="headers[]" value="10 HOURS 80 KM"  required>
+<input name="headers[]" value="EXTRA HOURS"  required>
+<input name="headers[]" value="EXTRA KM" required>
+
+<h4>Rows</h4>
+<div id="rows">
+    <div class="row-grid">
+        <input name="vehicle[]" placeholder="Col 1" required>
+        <input name="rate1[]" placeholder="Col 2" required>
+        <input name="rate2[]" placeholder="Col 3" required>
+        <input name="rate3[]" placeholder="Col 4" required>
+    </div>
+</div>
+
+<button type="button" class="add-btn" onclick="addRow()">➕ Add Row</button>
+
+<h4>Notes</h4>
+<div id="notes">
+    <textarea name="notes[]" placeholder="Note"></textarea>
+</div>
+
+<button type="button" class="add-btn" onclick="addNote()">➕ Add Note</button>
+
+<button type="submit" class="submit-btn">Generate & Download PDF</button>
+
+</form>
+
+</body>
+</html>
